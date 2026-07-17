@@ -26,6 +26,10 @@ class PermissionSeeder extends Seeder
         'caracteristicas.criar',
         'caracteristicas.editar',
         'caracteristicas.excluir',
+        'atributos.visualizar',
+        'atributos.criar',
+        'atributos.editar',
+        'atributos.excluir',
     ];
 
     /**

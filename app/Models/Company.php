@@ -69,4 +69,12 @@ class Company extends Model
     {
         return $this->hasMany(Feature::class);
     }
+
+    /**
+     * @return HasMany<PropertyAttribute, $this>
+     */
+    public function propertyAttributes(): HasMany
+    {
+        return $this->hasMany(PropertyAttribute::class);
+    }
 }

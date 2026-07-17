@@ -5,11 +5,13 @@ namespace App\Providers;
 use App\Models\Company;
 use App\Models\Feature;
 use App\Models\FeatureCategory;
+use App\Models\PropertyAttribute;
 use App\Models\User;
 use App\Observers\CompanyObserver;
 use App\Policies\FeatureCategoryPolicy;
 use App\Policies\FeaturePolicy;
 use App\Policies\PermissionPolicy;
+use App\Policies\PropertyAttributePolicy;
 use App\Policies\RolePolicy;
 use App\Policies\UserPolicy;
 use Carbon\CarbonImmutable;
@@ -77,5 +79,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Permission::class, PermissionPolicy::class);
         Gate::policy(FeatureCategory::class, FeatureCategoryPolicy::class);
         Gate::policy(Feature::class, FeaturePolicy::class);
+        Gate::policy(PropertyAttribute::class, PropertyAttributePolicy::class);
     }
 }

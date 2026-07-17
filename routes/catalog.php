@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\FeatureCategoryController;
 use App\Http\Controllers\FeatureController;
+use App\Http\Controllers\PropertyAttributeController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
@@ -20,4 +21,11 @@ Route::middleware(['auth'])->group(function () {
     Route::put('caracteristicas/{feature}', [FeatureController::class, 'update'])->name('features.update');
     Route::patch('caracteristicas/{feature}/status', [FeatureController::class, 'toggle'])->name('features.toggle');
     Route::delete('caracteristicas/{feature}', [FeatureController::class, 'destroy'])->name('features.destroy');
+
+    Route::get('atributos', [PropertyAttributeController::class, 'index'])->name('property-attributes.index');
+    Route::get('atributos/novo', [PropertyAttributeController::class, 'create'])->name('property-attributes.create');
+    Route::post('atributos', [PropertyAttributeController::class, 'store'])->name('property-attributes.store');
+    Route::get('atributos/{property_attribute}/editar', [PropertyAttributeController::class, 'edit'])->name('property-attributes.edit');
+    Route::put('atributos/{property_attribute}', [PropertyAttributeController::class, 'update'])->name('property-attributes.update');
+    Route::delete('atributos/{property_attribute}', [PropertyAttributeController::class, 'destroy'])->name('property-attributes.destroy');
 });

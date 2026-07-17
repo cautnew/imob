@@ -5,6 +5,7 @@ import {
     KeyRound,
     LayoutGrid,
     ShieldCheck,
+    SlidersHorizontal,
     Tags,
     Users,
 } from 'lucide-react';
@@ -25,6 +26,7 @@ import { usePermissions } from '@/hooks/use-permissions';
 import { dashboard } from '@/routes';
 import { index as featuresIndex } from '@/routes/features';
 import { index as permissionsIndex } from '@/routes/permissions';
+import { index as propertyAttributesIndex } from '@/routes/property-attributes';
 import { index as rolesIndex } from '@/routes/roles';
 import { index as usersIndex } from '@/routes/users';
 import type { NavItem } from '@/types';
@@ -84,6 +86,15 @@ export function AppSidebar() {
                       title: 'Características',
                       href: featuresIndex(),
                       icon: Tags,
+                  },
+              ]
+            : []),
+        ...(can('atributos.visualizar')
+            ? [
+                  {
+                      title: 'Atributos',
+                      href: propertyAttributesIndex(),
+                      icon: SlidersHorizontal,
                   },
               ]
             : []),
