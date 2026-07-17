@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Spatie\Permission\PermissionRegistrar;
 use Symfony\Component\HttpFoundation\Response;
 
 class ResolveCurrentTenant
@@ -17,6 +18,7 @@ class ResolveCurrentTenant
     {
         if ($user = $request->user()) {
             app()->instance('currentCompany', $user->company);
+            app(PermissionRegistrar::class)->setPermissionsTeamId($user->company_id);
         }
 
         return $next($request);

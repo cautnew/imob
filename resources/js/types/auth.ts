@@ -12,6 +12,7 @@ export type User = {
     company_id: number;
     is_owner: boolean;
     company: Company;
+    roles?: string[];
     name: string;
     email: string;
     avatar?: string;

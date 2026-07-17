@@ -12,4 +12,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 require __DIR__.'/settings.php';
 require __DIR__.'/onboarding.php';
-require __DIR__.'/team.php';
+require __DIR__.'/access.php';

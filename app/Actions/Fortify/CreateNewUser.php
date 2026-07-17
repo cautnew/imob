@@ -33,13 +33,17 @@ class CreateNewUser implements CreatesNewUsers
                 'name' => $input['company_name'],
             ]);
 
-            return User::create([
+            $user = User::create([
                 'name' => $input['name'],
                 'email' => $input['email'],
                 'password' => $input['password'],
                 'company_id' => $company->id,
                 'is_owner' => true,
             ]);
+
+            $user->assignRole('Administrador');
+
+            return $user;
         });
     }
 }

@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Requests\Team;
+namespace App\Http\Requests;
 
 use App\Concerns\PasswordValidationRules;
 use App\Concerns\ProfileValidationRules;
+use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class TeamMemberStoreRequest extends FormRequest
+class UserStoreRequest extends FormRequest
 {
     use PasswordValidationRules, ProfileValidationRules;
 
@@ -16,7 +18,7 @@ class TeamMemberStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return (bool) $this->user()?->is_owner;
+        return (bool) $this->user()?->can('create', User::class);
     }
 
     /**
@@ -29,6 +31,11 @@ class TeamMemberStoreRequest extends FormRequest
         return [
             ...$this->profileRules(),
             'password' => $this->passwordRules(),
+            'roles' => ['array'],
+            'roles.*' => [
+                'integer',
+                Rule::exists('roles', 'id')->where('company_id', $this->user()?->company_id),
+            ],
         ];
     }
 }

@@ -1,5 +1,12 @@
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid, Users } from 'lucide-react';
+import {
+    BookOpen,
+    FolderGit2,
+    KeyRound,
+    LayoutGrid,
+    ShieldCheck,
+    Users,
+} from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -14,7 +21,9 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import { index as teamIndex } from '@/routes/team';
+import { index as permissionsIndex } from '@/routes/permissions';
+import { index as rolesIndex } from '@/routes/roles';
+import { index as usersIndex } from '@/routes/users';
 import type { NavItem } from '@/types';
 
 const footerNavItems: NavItem[] = [
@@ -31,7 +40,7 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
-    const { auth } = usePage().props;
+    const { permissionNames } = usePage().props;
 
     const mainNavItems: NavItem[] = [
         {
@@ -39,12 +48,30 @@ export function AppSidebar() {
             href: dashboard(),
             icon: LayoutGrid,
         },
-        ...(auth.user?.is_owner
+        ...(permissionNames?.includes('usuarios.visualizar')
             ? [
                   {
-                      title: 'Team',
-                      href: teamIndex(),
+                      title: 'Usuários',
+                      href: usersIndex(),
                       icon: Users,
+                  },
+              ]
+            : []),
+        ...(permissionNames?.includes('papeis.visualizar')
+            ? [
+                  {
+                      title: 'Papéis',
+                      href: rolesIndex(),
+                      icon: ShieldCheck,
+                  },
+              ]
+            : []),
+        ...(permissionNames?.includes('permissoes.visualizar')
+            ? [
+                  {
+                      title: 'Permissões',
+                      href: permissionsIndex(),
+                      icon: KeyRound,
                   },
               ]
             : []),

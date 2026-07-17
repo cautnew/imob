@@ -2,92 +2,34 @@ import { Form, Head } from '@inertiajs/react';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import { useInitials } from '@/hooks/use-initials';
-import { index, store } from '@/routes/team';
+import { index, store } from '@/routes/users';
 import type { BreadcrumbItem } from '@/types';
 
-type Member = {
+type Role = {
     id: number;
     name: string;
-    email: string;
-    is_owner: boolean;
 };
 
 type Props = {
-    members: Member[];
+    roles: Role[];
 };
 
-export default function TeamIndex({ members }: Props) {
-    const getInitials = useInitials();
-
+export default function UsersCreate({ roles }: Props) {
     return (
         <>
-            <Head title="Team members" />
+            <Head title="Novo usuário" />
             <div className="flex flex-1 flex-col gap-6 p-4">
                 <Heading
-                    title="Team members"
-                    description="People who have access to your company"
+                    title="Novo usuário"
+                    description="Adicione uma pessoa à sua imobiliária"
                 />
 
                 <Card>
-                    <CardHeader>
-                        <CardTitle>Members</CardTitle>
-                        <CardDescription>
-                            Everyone with access to this company.
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex flex-col gap-4">
-                        {members.map((member) => (
-                            <div
-                                key={member.id}
-                                className="flex items-center gap-3"
-                            >
-                                <Avatar>
-                                    <AvatarFallback>
-                                        {getInitials(member.name)}
-                                    </AvatarFallback>
-                                </Avatar>
-                                <div className="flex-1">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-sm font-medium">
-                                            {member.name}
-                                        </span>
-                                        {member.is_owner && (
-                                            <Badge variant="secondary">
-                                                Owner
-                                            </Badge>
-                                        )}
-                                    </div>
-                                    <span className="text-sm text-muted-foreground">
-                                        {member.email}
-                                    </span>
-                                </div>
-                            </div>
-                        ))}
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Add a team member</CardTitle>
-                        <CardDescription>
-                            Creates the account directly with the password you
-                            set below.
-                        </CardDescription>
-                    </CardHeader>
                     <CardContent>
                         <Form
                             {...store.form()}
@@ -98,36 +40,34 @@ export default function TeamIndex({ members }: Props) {
                             {({ processing, errors }) => (
                                 <div className="grid gap-6">
                                     <div className="grid gap-2">
-                                        <Label htmlFor="name">Name</Label>
+                                        <Label htmlFor="name">Nome</Label>
                                         <Input
                                             id="name"
                                             type="text"
                                             required
                                             autoComplete="name"
                                             name="name"
-                                            placeholder="Full name"
+                                            placeholder="Nome completo"
                                         />
                                         <InputError message={errors.name} />
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="email">
-                                            Email address
-                                        </Label>
+                                        <Label htmlFor="email">E-mail</Label>
                                         <Input
                                             id="email"
                                             type="email"
                                             required
                                             autoComplete="email"
                                             name="email"
-                                            placeholder="email@example.com"
+                                            placeholder="email@exemplo.com"
                                         />
                                         <InputError message={errors.email} />
                                     </div>
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="password">
-                                            Password
+                                            Senha
                                         </Label>
                                         <PasswordInput
                                             id="password"
@@ -135,12 +75,14 @@ export default function TeamIndex({ members }: Props) {
                                             autoComplete="new-password"
                                             name="password"
                                         />
-                                        <InputError message={errors.password} />
+                                        <InputError
+                                            message={errors.password}
+                                        />
                                     </div>
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="password_confirmation">
-                                            Confirm password
+                                            Confirmar senha
                                         </Label>
                                         <PasswordInput
                                             id="password_confirmation"
@@ -155,10 +97,39 @@ export default function TeamIndex({ members }: Props) {
                                         />
                                     </div>
 
-                                    <Button type="submit" className="w-fit">
-                                        {processing && <Spinner />}
-                                        Add member
-                                    </Button>
+                                    <div className="grid gap-2">
+                                        <Label>Papéis</Label>
+                                        <div className="flex flex-col gap-2">
+                                            {roles.map((role) => (
+                                                <label
+                                                    key={role.id}
+                                                    className="flex items-center gap-2 text-sm"
+                                                >
+                                                    <input
+                                                        type="checkbox"
+                                                        name="roles[]"
+                                                        value={role.id}
+                                                        className="size-4 rounded border-input accent-primary"
+                                                    />
+                                                    {role.name}
+                                                </label>
+                                            ))}
+                                        </div>
+                                        <InputError message={errors.roles} />
+                                    </div>
+
+                                    <div className="flex gap-2">
+                                        <Button
+                                            type="submit"
+                                            disabled={processing}
+                                        >
+                                            {processing && <Spinner />}
+                                            Criar usuário
+                                        </Button>
+                                        <Button variant="outline" asChild>
+                                            <a href={index().url}>Cancelar</a>
+                                        </Button>
+                                    </div>
                                 </div>
                             )}
                         </Form>
@@ -171,11 +142,15 @@ export default function TeamIndex({ members }: Props) {
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Team',
+        title: 'Usuários',
         href: index(),
+    },
+    {
+        title: 'Novo usuário',
+        href: '',
     },
 ];
 
-TeamIndex.layout = {
+UsersCreate.layout = {
     breadcrumbs,
 };
