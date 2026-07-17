@@ -77,4 +77,20 @@ class Company extends Model
     {
         return $this->hasMany(PropertyAttribute::class);
     }
+
+    /**
+     * @return HasMany<Property, $this>
+     */
+    public function properties(): HasMany
+    {
+        return $this->hasMany(Property::class);
+    }
+
+    /**
+     * @return HasMany<PriceType, $this>
+     */
+    public function priceTypes(): HasMany
+    {
+        return $this->hasMany(PriceType::class);
+    }
 }

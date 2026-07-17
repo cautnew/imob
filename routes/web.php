@@ -14,3 +14,4 @@ require __DIR__.'/settings.php';
 require __DIR__.'/onboarding.php';
 require __DIR__.'/access.php';
 require __DIR__.'/catalog.php';
+require __DIR__.'/properties.php';

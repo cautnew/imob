@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\FeatureCategoryController;
 use App\Http\Controllers\FeatureController;
+use App\Http\Controllers\PriceTypeController;
 use App\Http\Controllers\PropertyAttributeController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,4 +29,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('atributos/{property_attribute}/editar', [PropertyAttributeController::class, 'edit'])->name('property-attributes.edit');
     Route::put('atributos/{property_attribute}', [PropertyAttributeController::class, 'update'])->name('property-attributes.update');
     Route::delete('atributos/{property_attribute}', [PropertyAttributeController::class, 'destroy'])->name('property-attributes.destroy');
+
+    Route::get('precos', [PriceTypeController::class, 'index'])->name('price-types.index');
+    Route::get('precos/novo', [PriceTypeController::class, 'create'])->name('price-types.create');
+    Route::post('precos', [PriceTypeController::class, 'store'])->name('price-types.store');
+    Route::get('precos/{price_type}/editar', [PriceTypeController::class, 'edit'])->name('price-types.edit');
+    Route::put('precos/{price_type}', [PriceTypeController::class, 'update'])->name('price-types.update');
+    Route::delete('precos/{price_type}', [PriceTypeController::class, 'destroy'])->name('price-types.destroy');
 });

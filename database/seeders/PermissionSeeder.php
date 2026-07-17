@@ -30,6 +30,14 @@ class PermissionSeeder extends Seeder
         'atributos.criar',
         'atributos.editar',
         'atributos.excluir',
+        'imoveis.visualizar',
+        'imoveis.criar',
+        'imoveis.editar',
+        'imoveis.excluir',
+        'precos.visualizar',
+        'precos.criar',
+        'precos.editar',
+        'precos.excluir',
     ];
 
     /**

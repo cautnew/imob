@@ -1,6 +1,8 @@
 import { Link } from '@inertiajs/react';
 import {
     BookOpen,
+    Building2,
+    DollarSign,
     FolderGit2,
     KeyRound,
     LayoutGrid,
@@ -26,6 +28,8 @@ import { usePermissions } from '@/hooks/use-permissions';
 import { dashboard } from '@/routes';
 import { index as featuresIndex } from '@/routes/features';
 import { index as permissionsIndex } from '@/routes/permissions';
+import { index as priceTypesIndex } from '@/routes/price-types';
+import { index as propertiesIndex } from '@/routes/properties';
 import { index as propertyAttributesIndex } from '@/routes/property-attributes';
 import { index as rolesIndex } from '@/routes/roles';
 import { index as usersIndex } from '@/routes/users';
@@ -53,6 +57,15 @@ export function AppSidebar() {
             href: dashboard(),
             icon: LayoutGrid,
         },
+        ...(can('imoveis.visualizar')
+            ? [
+                  {
+                      title: 'Imóveis',
+                      href: propertiesIndex(),
+                      icon: Building2,
+                  },
+              ]
+            : []),
         ...(can('usuarios.visualizar')
             ? [
                   {
@@ -95,6 +108,15 @@ export function AppSidebar() {
                       title: 'Atributos',
                       href: propertyAttributesIndex(),
                       icon: SlidersHorizontal,
+                  },
+              ]
+            : []),
+        ...(can('precos.visualizar')
+            ? [
+                  {
+                      title: 'Tipos de preço',
+                      href: priceTypesIndex(),
+                      icon: DollarSign,
                   },
               ]
             : []),
