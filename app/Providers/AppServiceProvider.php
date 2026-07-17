@@ -3,8 +3,12 @@
 namespace App\Providers;
 
 use App\Models\Company;
+use App\Models\Feature;
+use App\Models\FeatureCategory;
 use App\Models\User;
 use App\Observers\CompanyObserver;
+use App\Policies\FeatureCategoryPolicy;
+use App\Policies\FeaturePolicy;
 use App\Policies\PermissionPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\UserPolicy;
@@ -71,5 +75,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(User::class, UserPolicy::class);
         Gate::policy(Role::class, RolePolicy::class);
         Gate::policy(Permission::class, PermissionPolicy::class);
+        Gate::policy(FeatureCategory::class, FeatureCategoryPolicy::class);
+        Gate::policy(Feature::class, FeaturePolicy::class);
     }
 }

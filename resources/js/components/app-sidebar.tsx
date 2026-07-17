@@ -1,10 +1,11 @@
-import { Link, usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import {
     BookOpen,
     FolderGit2,
     KeyRound,
     LayoutGrid,
     ShieldCheck,
+    Tags,
     Users,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
@@ -20,7 +21,9 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { usePermissions } from '@/hooks/use-permissions';
 import { dashboard } from '@/routes';
+import { index as featuresIndex } from '@/routes/features';
 import { index as permissionsIndex } from '@/routes/permissions';
 import { index as rolesIndex } from '@/routes/roles';
 import { index as usersIndex } from '@/routes/users';
@@ -40,7 +43,7 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
-    const { permissionNames } = usePage().props;
+    const { can } = usePermissions();
 
     const mainNavItems: NavItem[] = [
         {
@@ -48,7 +51,7 @@ export function AppSidebar() {
             href: dashboard(),
             icon: LayoutGrid,
         },
-        ...(permissionNames?.includes('usuarios.visualizar')
+        ...(can('usuarios.visualizar')
             ? [
                   {
                       title: 'Usuários',
@@ -57,7 +60,7 @@ export function AppSidebar() {
                   },
               ]
             : []),
-        ...(permissionNames?.includes('papeis.visualizar')
+        ...(can('papeis.visualizar')
             ? [
                   {
                       title: 'Papéis',
@@ -66,12 +69,21 @@ export function AppSidebar() {
                   },
               ]
             : []),
-        ...(permissionNames?.includes('permissoes.visualizar')
+        ...(can('permissoes.visualizar')
             ? [
                   {
                       title: 'Permissões',
                       href: permissionsIndex(),
                       icon: KeyRound,
+                  },
+              ]
+            : []),
+        ...(can('caracteristicas.visualizar')
+            ? [
+                  {
+                      title: 'Características',
+                      href: featuresIndex(),
+                      icon: Tags,
                   },
               ]
             : []),

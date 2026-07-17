@@ -11,11 +11,3 @@ parameters:
         - routes/
 
     level: 7
-
-    ignoreErrors:
-        -
-            identifier: trait.unused
-            path: app/Models/Concerns/BelongsToCompany.php
-            message: '#BelongsToCompany is used zero times#'
-            # Prepared for future tenant-scoped business models (e.g. properties, contracts);
-            # none exist yet, so PHPStan can''t see a consumer to analyse it against.

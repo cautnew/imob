@@ -1,7 +1,8 @@
 import { Form, Head, Link } from '@inertiajs/react';
-import { Pencil, Plus, Trash2 } from 'lucide-react';
+import { Pencil, Plus, Power, PowerOff, Trash2 } from 'lucide-react';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -21,71 +22,131 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { usePermissions } from '@/hooks/use-permissions';
-import { create, destroy, edit, index } from '@/routes/roles';
+import { create, destroy, edit, index, toggle } from '@/routes/feature-categories';
+import { index as featuresIndex } from '@/routes/features';
 import type { BreadcrumbItem } from '@/types';
 
-type RoleRow = {
+type FeatureCategoryRow = {
     id: number;
     name: string;
-    users_count: number;
+    active: boolean;
+    features_count: number;
 };
 
 type Props = {
-    roles: RoleRow[];
+    featureCategories: FeatureCategoryRow[];
 };
 
-export default function RolesIndex({ roles }: Props) {
+export default function FeatureCategoriesIndex({ featureCategories }: Props) {
     const { can } = usePermissions();
 
-    const canCreate = can('papeis.criar');
-    const canEdit = can('papeis.editar');
-    const canDelete = can('papeis.excluir');
+    const canCreate = can('caracteristicas.criar');
+    const canEdit = can('caracteristicas.editar');
+    const canDelete = can('caracteristicas.excluir');
 
     return (
         <>
-            <Head title="Papéis" />
+            <Head title="Categorias de características" />
             <div className="flex flex-1 flex-col gap-6 p-4">
                 <div className="flex items-center justify-between">
                     <Heading
-                        title="Papéis"
-                        description="Perfis de acesso da sua imobiliária"
+                        title="Categorias de características"
+                        description="Organize o catálogo de características dos imóveis"
                     />
-                    {canCreate && (
-                        <Button asChild>
-                            <Link href={create()}>
-                                <Plus />
-                                Novo papel
+                    <div className="flex items-center gap-2">
+                        <Button variant="outline" asChild>
+                            <Link href={featuresIndex()}>
+                                Ver características
                             </Link>
                         </Button>
-                    )}
+                        {canCreate && (
+                            <Button asChild>
+                                <Link href={create()}>
+                                    <Plus />
+                                    Nova categoria
+                                </Link>
+                            </Button>
+                        )}
+                    </div>
                 </div>
 
                 <Table>
                     <TableHeader>
                         <TableRow>
                             <TableHead>Nome</TableHead>
-                            <TableHead>Usuários</TableHead>
+                            <TableHead>Características</TableHead>
+                            <TableHead>Status</TableHead>
                             <TableHead className="w-0">Ações</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {roles.map((role) => (
-                            <TableRow key={role.id}>
+                        {featureCategories.map((category) => (
+                            <TableRow key={category.id}>
                                 <TableCell className="font-medium">
-                                    {role.name}
+                                    <Link
+                                        href={
+                                            featuresIndex({
+                                                query: {
+                                                    feature_category_id:
+                                                        category.id,
+                                                },
+                                            }).url
+                                        }
+                                        className="underline-offset-4 hover:underline"
+                                    >
+                                        {category.name}
+                                    </Link>
                                 </TableCell>
                                 <TableCell className="text-muted-foreground">
-                                    {role.users_count}
+                                    {category.features_count}
+                                </TableCell>
+                                <TableCell>
+                                    <Badge
+                                        variant={
+                                            category.active
+                                                ? 'default'
+                                                : 'outline'
+                                        }
+                                    >
+                                        {category.active ? 'Ativa' : 'Inativa'}
+                                    </Badge>
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex items-center gap-2">
+                                        {canEdit && (
+                                            <Form
+                                                action={toggle(category.id)}
+                                            >
+                                                {({ processing }) => (
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        type="submit"
+                                                        disabled={processing}
+                                                    >
+                                                        {category.active ? (
+                                                            <PowerOff />
+                                                        ) : (
+                                                            <Power />
+                                                        )}
+                                                        <span className="sr-only">
+                                                            {category.active
+                                                                ? 'Desativar'
+                                                                : 'Ativar'}
+                                                        </span>
+                                                    </Button>
+                                                )}
+                                            </Form>
+                                        )}
                                         {canEdit && (
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
                                                 asChild
                                             >
-                                                <Link href={edit(role.id)}>
+                                                <Link
+                                                    href={edit(category.id)}
+                                                >
                                                     <Pencil />
                                                     <span className="sr-only">
                                                         Editar
@@ -108,18 +169,18 @@ export default function RolesIndex({ roles }: Props) {
                                                 </DialogTrigger>
                                                 <DialogContent>
                                                     <DialogTitle>
-                                                        Excluir {role.name}?
+                                                        Excluir {category.name}?
                                                     </DialogTitle>
                                                     <DialogDescription>
                                                         Essa ação não pode ser
-                                                        desfeita. Papéis em
-                                                        uso por algum usuário
-                                                        não podem ser
-                                                        excluídos.
+                                                        desfeita. Categorias com
+                                                        características
+                                                        vinculadas não podem
+                                                        ser excluídas.
                                                     </DialogDescription>
                                                     <Form
-                                                        {...destroy.form(
-                                                            role.id,
+                                                        action={destroy(
+                                                            category.id,
                                                         )}
                                                     >
                                                         {({
@@ -129,7 +190,7 @@ export default function RolesIndex({ roles }: Props) {
                                                             <>
                                                                 <InputError
                                                                     message={
-                                                                        errors.role
+                                                                        errors.feature_category
                                                                     }
                                                                 />
                                                                 <DialogFooter className="gap-2">
@@ -169,11 +230,11 @@ export default function RolesIndex({ roles }: Props) {
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Papéis',
+        title: 'Categorias de características',
         href: index(),
     },
 ];
 
-RolesIndex.layout = {
+FeatureCategoriesIndex.layout = {
     breadcrumbs,
 };

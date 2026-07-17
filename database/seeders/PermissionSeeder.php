@@ -22,6 +22,10 @@ class PermissionSeeder extends Seeder
         'papeis.editar',
         'papeis.excluir',
         'permissoes.visualizar',
+        'caracteristicas.visualizar',
+        'caracteristicas.criar',
+        'caracteristicas.editar',
+        'caracteristicas.excluir',
     ];
 
     /**

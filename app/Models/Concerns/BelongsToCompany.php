@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * Attaches a model to the currently resolved tenant (see ResolveCurrentTenant).
  *
  * Applies a global scope that filters every query by the current company,
- * and auto-fills `company_id` on creation. Intended for future business
- * models (e.g. properties, contracts) — not applied to Company/User.
+ * and auto-fills `company_id` on creation. Used by tenant-scoped business
+ * models (e.g. FeatureCategory, Feature) — not applied to Company/User.
  */
 trait BelongsToCompany
 {

@@ -1,4 +1,4 @@
-import { Form, Head, Link, usePage } from '@inertiajs/react';
+import { Form, Head, Link } from '@inertiajs/react';
 import { Pencil, Plus, Trash2 } from 'lucide-react';
 import Heading from '@/components/heading';
 import { Badge } from '@/components/ui/badge';
@@ -20,6 +20,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { usePermissions } from '@/hooks/use-permissions';
 import { create, destroy, edit, index } from '@/routes/users';
 import type { BreadcrumbItem } from '@/types';
 
@@ -36,11 +37,11 @@ type Props = {
 };
 
 export default function UsersIndex({ users }: Props) {
-    const { permissionNames } = usePage().props;
+    const { can } = usePermissions();
 
-    const canCreate = permissionNames.includes('usuarios.criar');
-    const canEdit = permissionNames.includes('usuarios.editar');
-    const canDelete = permissionNames.includes('usuarios.excluir');
+    const canCreate = can('usuarios.criar');
+    const canEdit = can('usuarios.editar');
+    const canDelete = can('usuarios.excluir');
 
     return (
         <>

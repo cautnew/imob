@@ -53,4 +53,20 @@ class Company extends Model
     {
         return $this->hasMany(Role::class);
     }
+
+    /**
+     * @return HasMany<FeatureCategory, $this>
+     */
+    public function featureCategories(): HasMany
+    {
+        return $this->hasMany(FeatureCategory::class);
+    }
+
+    /**
+     * @return HasMany<Feature, $this>
+     */
+    public function features(): HasMany
+    {
+        return $this->hasMany(Feature::class);
+    }
 }
