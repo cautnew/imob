@@ -1,5 +1,17 @@
+export type Company = {
+    id: number;
+    name: string;
+    document: string | null;
+    phone: string | null;
+    address: string | null;
+    onboarded_at: string | null;
+};
+
 export type User = {
     id: number;
+    company_id: number;
+    is_owner: boolean;
+    company: Company;
     name: string;
     email: string;
     avatar?: string;
