@@ -1,5 +1,5 @@
 import { Form, Head, Link, router } from '@inertiajs/react';
-import { Pencil, Plus, Trash2 } from 'lucide-react';
+import { Images, Pencil, Plus, Trash2 } from 'lucide-react';
 import type { FormEvent } from 'react';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
@@ -32,6 +32,7 @@ import {
 } from '@/components/ui/table';
 import { usePermissions } from '@/hooks/use-permissions';
 import { create, destroy, edit, index } from '@/routes/properties';
+import { index as media } from '@/routes/property-media';
 import type { BreadcrumbItem } from '@/types';
 
 type Option = {
@@ -238,6 +239,20 @@ export default function PropertiesIndex({
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex items-center gap-2">
+                                        {canEdit && (
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                asChild
+                                            >
+                                                <Link href={media(property.id)}>
+                                                    <Images />
+                                                    <span className="sr-only">
+                                                        Mídias
+                                                    </span>
+                                                </Link>
+                                            </Button>
+                                        )}
                                         {canEdit && (
                                             <Button
                                                 variant="ghost"

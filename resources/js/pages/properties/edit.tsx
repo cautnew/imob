@@ -1,7 +1,10 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
+import { Images } from 'lucide-react';
 import Heading from '@/components/heading';
 import PropertyForm from '@/components/properties/property-form';
+import { Button } from '@/components/ui/button';
 import { index, update } from '@/routes/properties';
+import { index as mediaIndex } from '@/routes/property-media';
 import type { BreadcrumbItem } from '@/types';
 
 type Option = {
@@ -92,10 +95,18 @@ export default function PropertiesEdit({
         <>
             <Head title={`Editar ${property.title}`} />
             <div className="flex flex-1 flex-col gap-6 p-4">
-                <Heading
-                    title="Editar imóvel"
-                    description={`Atualize os dados de ${property.title}`}
-                />
+                <div className="flex items-center justify-between">
+                    <Heading
+                        title="Editar imóvel"
+                        description={`Atualize os dados de ${property.title}`}
+                    />
+                    <Button variant="outline" asChild>
+                        <Link href={mediaIndex(property.id)}>
+                            <Images />
+                            Gerenciar mídias
+                        </Link>
+                    </Button>
+                </div>
 
                 <PropertyForm
                     action={update(property.id)}

@@ -88,4 +88,12 @@ class Property extends Model
     {
         return $this->hasMany(PropertyPrice::class);
     }
+
+    /**
+     * @return HasMany<PropertyMedia, $this>
+     */
+    public function media(): HasMany
+    {
+        return $this->hasMany(PropertyMedia::class)->orderBy('sort_order');
+    }
 }
