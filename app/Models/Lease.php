@@ -100,4 +100,20 @@ class Lease extends Model
     {
         return $this->hasMany(LeaseDocument::class)->orderByDesc('created_at');
     }
+
+    /**
+     * @return HasMany<Transaction, $this>
+     */
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    /**
+     * @return HasMany<Bill, $this>
+     */
+    public function bills(): HasMany
+    {
+        return $this->hasMany(Bill::class);
+    }
 }

@@ -17,6 +17,7 @@ use Illuminate\Support\Carbon;
  * @property int $company_id
  * @property int $property_id
  * @property int|null $lease_id
+ * @property int|null $bill_id
  * @property int $transaction_category_id
  * @property string $description
  * @property string $amount
@@ -28,7 +29,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  */
 #[Fillable([
-    'property_id', 'lease_id', 'transaction_category_id',
+    'property_id', 'lease_id', 'bill_id', 'transaction_category_id',
     'description', 'amount', 'due_date', 'notes',
     'status', 'paid_date',
 ])]
@@ -74,6 +75,14 @@ class Transaction extends Model
     public function transactionCategory(): BelongsTo
     {
         return $this->belongsTo(TransactionCategory::class);
+    }
+
+    /**
+     * @return BelongsTo<Bill, $this>
+     */
+    public function bill(): BelongsTo
+    {
+        return $this->belongsTo(Bill::class);
     }
 
     /**

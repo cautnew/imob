@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Bill;
 use App\Models\Company;
 use App\Models\Feature;
 use App\Models\FeatureCategory;
@@ -15,6 +16,7 @@ use App\Models\Transaction;
 use App\Models\TransactionCategory;
 use App\Models\User;
 use App\Observers\CompanyObserver;
+use App\Policies\BillPolicy;
 use App\Policies\FeatureCategoryPolicy;
 use App\Policies\FeaturePolicy;
 use App\Policies\LeasePolicy;
@@ -101,5 +103,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Lease::class, LeasePolicy::class);
         Gate::policy(TransactionCategory::class, TransactionCategoryPolicy::class);
         Gate::policy(Transaction::class, TransactionPolicy::class);
+        Gate::policy(Bill::class, BillPolicy::class);
     }
 }

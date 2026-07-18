@@ -133,4 +133,12 @@ class Company extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+
+    /**
+     * @return HasMany<Bill, $this>
+     */
+    public function bills(): HasMany
+    {
+        return $this->hasMany(Bill::class);
+    }
 }

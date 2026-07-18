@@ -2,7 +2,7 @@
     "$schema": "https://getcomposer.org/schema.json",
     "name": "cautnew/imob",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "Application to manage lessees and leasing for real estate agencies.",
     "keywords": [
         "laravel",
         "framework"

@@ -7,6 +7,7 @@ import {
     FolderGit2,
     KeyRound,
     LayoutGrid,
+    Receipt,
     ShieldCheck,
     SlidersHorizontal,
     Tags,
@@ -30,6 +31,7 @@ import {
 } from '@/components/ui/sidebar';
 import { usePermissions } from '@/hooks/use-permissions';
 import { dashboard } from '@/routes';
+import { index as billsIndex } from '@/routes/bills';
 import { index as featuresIndex } from '@/routes/features';
 import { index as leasesIndex } from '@/routes/leases';
 import { index as lesseesIndex } from '@/routes/lessees';
@@ -107,6 +109,15 @@ export function AppSidebar() {
                       title: 'Financeiro',
                       href: transactionsIndex(),
                       icon: Wallet,
+                  },
+              ]
+            : []),
+        ...(can('boletos.visualizar')
+            ? [
+                  {
+                      title: 'Boletos',
+                      href: billsIndex(),
+                      icon: Receipt,
                   },
               ]
             : []),

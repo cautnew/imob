@@ -54,6 +54,10 @@ class PermissionSeeder extends Seeder
         'financeiro.criar',
         'financeiro.editar',
         'financeiro.excluir',
+        'boletos.visualizar',
+        'boletos.criar',
+        'boletos.editar',
+        'boletos.excluir',
     ];
 
     /**
