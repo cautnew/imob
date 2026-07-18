@@ -96,4 +96,12 @@ class Property extends Model
     {
         return $this->hasMany(PropertyMedia::class)->orderBy('sort_order');
     }
+
+    /**
+     * @return BelongsToMany<Owner, $this>
+     */
+    public function owners(): BelongsToMany
+    {
+        return $this->belongsToMany(Owner::class);
+    }
 }

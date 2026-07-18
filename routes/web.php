@@ -16,3 +16,4 @@ require __DIR__.'/access.php';
 require __DIR__.'/catalog.php';
 require __DIR__.'/properties.php';
 require __DIR__.'/property-media.php';
+require __DIR__.'/owners.php';

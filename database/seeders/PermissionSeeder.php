@@ -38,6 +38,10 @@ class PermissionSeeder extends Seeder
         'precos.criar',
         'precos.editar',
         'precos.excluir',
+        'proprietarios.visualizar',
+        'proprietarios.criar',
+        'proprietarios.editar',
+        'proprietarios.excluir',
     ];
 
     /**

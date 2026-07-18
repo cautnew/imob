@@ -9,6 +9,7 @@ import {
     ShieldCheck,
     SlidersHorizontal,
     Tags,
+    UserRound,
     Users,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
@@ -27,6 +28,7 @@ import {
 import { usePermissions } from '@/hooks/use-permissions';
 import { dashboard } from '@/routes';
 import { index as featuresIndex } from '@/routes/features';
+import { index as ownersIndex } from '@/routes/owners';
 import { index as permissionsIndex } from '@/routes/permissions';
 import { index as priceTypesIndex } from '@/routes/price-types';
 import { index as propertiesIndex } from '@/routes/properties';
@@ -63,6 +65,15 @@ export function AppSidebar() {
                       title: 'Imóveis',
                       href: propertiesIndex(),
                       icon: Building2,
+                  },
+              ]
+            : []),
+        ...(can('proprietarios.visualizar')
+            ? [
+                  {
+                      title: 'Proprietários',
+                      href: ownersIndex(),
+                      icon: UserRound,
                   },
               ]
             : []),

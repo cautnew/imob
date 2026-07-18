@@ -93,4 +93,12 @@ class Company extends Model
     {
         return $this->hasMany(PriceType::class);
     }
+
+    /**
+     * @return HasMany<Owner, $this>
+     */
+    public function owners(): HasMany
+    {
+        return $this->hasMany(Owner::class);
+    }
 }

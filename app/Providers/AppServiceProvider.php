@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Company;
 use App\Models\Feature;
 use App\Models\FeatureCategory;
+use App\Models\Owner;
 use App\Models\PriceType;
 use App\Models\Property;
 use App\Models\PropertyAttribute;
@@ -12,6 +13,7 @@ use App\Models\User;
 use App\Observers\CompanyObserver;
 use App\Policies\FeatureCategoryPolicy;
 use App\Policies\FeaturePolicy;
+use App\Policies\OwnerPolicy;
 use App\Policies\PermissionPolicy;
 use App\Policies\PriceTypePolicy;
 use App\Policies\PropertyAttributePolicy;
@@ -86,5 +88,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(PropertyAttribute::class, PropertyAttributePolicy::class);
         Gate::policy(Property::class, PropertyPolicy::class);
         Gate::policy(PriceType::class, PriceTypePolicy::class);
+        Gate::policy(Owner::class, OwnerPolicy::class);
     }
 }
