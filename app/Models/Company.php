@@ -109,4 +109,12 @@ class Company extends Model
     {
         return $this->hasMany(Lessee::class);
     }
+
+    /**
+     * @return HasMany<Lease, $this>
+     */
+    public function leases(): HasMany
+    {
+        return $this->hasMany(Lease::class);
+    }
 }

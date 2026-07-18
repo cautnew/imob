@@ -18,3 +18,5 @@ require __DIR__.'/properties.php';
 require __DIR__.'/property-media.php';
 require __DIR__.'/owners.php';
 require __DIR__.'/lessees.php';
+require __DIR__.'/leases.php';
+require __DIR__.'/lease-documents.php';

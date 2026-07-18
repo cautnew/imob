@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -64,13 +65,18 @@ class Lessee extends Model
     /**
      * The properties this lessee currently rents or has rented.
      *
-     * Prepared for the future rental/lease module (contracts will bind a
-     * lessee to a property via this relationship).
-     *
      * @return BelongsToMany<Property, $this>
      */
     public function properties(): BelongsToMany
     {
         return $this->belongsToMany(Property::class);
+    }
+
+    /**
+     * @return HasMany<Lease, $this>
+     */
+    public function leases(): HasMany
+    {
+        return $this->hasMany(Lease::class);
     }
 }

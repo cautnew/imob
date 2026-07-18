@@ -3,6 +3,7 @@ import {
     BookOpen,
     Building2,
     DollarSign,
+    FileSignature,
     FolderGit2,
     KeyRound,
     LayoutGrid,
@@ -29,6 +30,7 @@ import {
 import { usePermissions } from '@/hooks/use-permissions';
 import { dashboard } from '@/routes';
 import { index as featuresIndex } from '@/routes/features';
+import { index as leasesIndex } from '@/routes/leases';
 import { index as lesseesIndex } from '@/routes/lessees';
 import { index as ownersIndex } from '@/routes/owners';
 import { index as permissionsIndex } from '@/routes/permissions';
@@ -85,6 +87,15 @@ export function AppSidebar() {
                       title: 'Inquilinos',
                       href: lesseesIndex(),
                       icon: UsersRound,
+                  },
+              ]
+            : []),
+        ...(can('locacoes.visualizar')
+            ? [
+                  {
+                      title: 'Locações',
+                      href: leasesIndex(),
+                      icon: FileSignature,
                   },
               ]
             : []),

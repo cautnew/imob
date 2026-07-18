@@ -112,4 +112,12 @@ class Property extends Model
     {
         return $this->belongsToMany(Lessee::class);
     }
+
+    /**
+     * @return HasMany<Lease, $this>
+     */
+    public function leases(): HasMany
+    {
+        return $this->hasMany(Lease::class);
+    }
 }
