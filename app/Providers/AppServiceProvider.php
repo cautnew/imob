@@ -11,6 +11,8 @@ use App\Models\Owner;
 use App\Models\PriceType;
 use App\Models\Property;
 use App\Models\PropertyAttribute;
+use App\Models\Transaction;
+use App\Models\TransactionCategory;
 use App\Models\User;
 use App\Observers\CompanyObserver;
 use App\Policies\FeatureCategoryPolicy;
@@ -23,6 +25,8 @@ use App\Policies\PriceTypePolicy;
 use App\Policies\PropertyAttributePolicy;
 use App\Policies\PropertyPolicy;
 use App\Policies\RolePolicy;
+use App\Policies\TransactionCategoryPolicy;
+use App\Policies\TransactionPolicy;
 use App\Policies\UserPolicy;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
@@ -95,5 +99,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Owner::class, OwnerPolicy::class);
         Gate::policy(Lessee::class, LesseePolicy::class);
         Gate::policy(Lease::class, LeasePolicy::class);
+        Gate::policy(TransactionCategory::class, TransactionCategoryPolicy::class);
+        Gate::policy(Transaction::class, TransactionPolicy::class);
     }
 }

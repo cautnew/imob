@@ -13,6 +13,7 @@ import {
     UserRound,
     Users,
     UsersRound,
+    Wallet,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
@@ -38,6 +39,7 @@ import { index as priceTypesIndex } from '@/routes/price-types';
 import { index as propertiesIndex } from '@/routes/properties';
 import { index as propertyAttributesIndex } from '@/routes/property-attributes';
 import { index as rolesIndex } from '@/routes/roles';
+import { index as transactionsIndex } from '@/routes/transactions';
 import { index as usersIndex } from '@/routes/users';
 import type { NavItem } from '@/types';
 
@@ -96,6 +98,15 @@ export function AppSidebar() {
                       title: 'Locações',
                       href: leasesIndex(),
                       icon: FileSignature,
+                  },
+              ]
+            : []),
+        ...(can('financeiro.visualizar')
+            ? [
+                  {
+                      title: 'Financeiro',
+                      href: transactionsIndex(),
+                      icon: Wallet,
                   },
               ]
             : []),

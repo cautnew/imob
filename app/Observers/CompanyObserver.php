@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Enums\TransactionType;
 use App\Models\Company;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -24,7 +25,22 @@ class CompanyObserver
     ];
 
     /**
-     * Provision the default roles for a newly created company.
+     * The default financial transaction categories provisioned for every new company.
+     *
+     * @var list<array{name: string, type: TransactionType}>
+     */
+    public const array DEFAULT_TRANSACTION_CATEGORIES = [
+        ['name' => 'Aluguel', 'type' => TransactionType::Income],
+        ['name' => 'Multas', 'type' => TransactionType::Income],
+        ['name' => 'Juros', 'type' => TransactionType::Income],
+        ['name' => 'IPTU', 'type' => TransactionType::Expense],
+        ['name' => 'Condomínio', 'type' => TransactionType::Expense],
+        ['name' => 'Manutenção', 'type' => TransactionType::Expense],
+        ['name' => 'Seguro', 'type' => TransactionType::Expense],
+    ];
+
+    /**
+     * Provision the default roles and financial categories for a newly created company.
      */
     public function created(Company $company): void
     {
@@ -35,5 +51,12 @@ class CompanyObserver
         }
 
         Role::findByName('Administrador', 'web')->syncPermissions(Permission::all());
+
+        foreach (self::DEFAULT_TRANSACTION_CATEGORIES as $category) {
+            $company->transactionCategories()->create([
+                'name' => $category['name'],
+                'type' => $category['type'],
+            ]);
+        }
     }
 }

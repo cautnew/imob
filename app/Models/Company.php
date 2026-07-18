@@ -117,4 +117,20 @@ class Company extends Model
     {
         return $this->hasMany(Lease::class);
     }
+
+    /**
+     * @return HasMany<TransactionCategory, $this>
+     */
+    public function transactionCategories(): HasMany
+    {
+        return $this->hasMany(TransactionCategory::class);
+    }
+
+    /**
+     * @return HasMany<Transaction, $this>
+     */
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

@@ -50,6 +50,10 @@ class PermissionSeeder extends Seeder
         'locacoes.criar',
         'locacoes.editar',
         'locacoes.excluir',
+        'financeiro.visualizar',
+        'financeiro.criar',
+        'financeiro.editar',
+        'financeiro.excluir',
     ];
 
     /**
