@@ -4,6 +4,7 @@ use App\Http\Middleware\EnsureCompanyIsOnboarded;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\ResolveCurrentTenant;
+use App\Http\Middleware\ResolvePublicTenant;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -37,6 +38,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,
+            'public.tenant' => ResolvePublicTenant::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

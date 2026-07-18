@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\PropertyPurpose;
 use App\Models\PriceType;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -46,6 +47,7 @@ class PriceTypeUpdateRequest extends FormRequest
                     ->where(fn ($query) => $query->where('company_id', $this->user()?->company_id))
                     ->ignore($targetId),
             ],
+            'purpose' => ['nullable', Rule::enum(PropertyPurpose::class)],
             'comparable' => ['boolean'],
         ];
     }

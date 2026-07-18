@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\PropertyPurpose;
 use App\Http\Requests\PriceTypeStoreRequest;
 use App\Http\Requests\PriceTypeUpdateRequest;
 use App\Models\PriceType;
@@ -34,7 +35,9 @@ class PriceTypeController extends Controller
     {
         $this->authorize('create', PriceType::class);
 
-        return Inertia::render('price-types/create');
+        return Inertia::render('price-types/create', [
+            'purposes' => $this->purposeOptions(),
+        ]);
     }
 
     /**
@@ -57,7 +60,11 @@ class PriceTypeController extends Controller
         $this->authorize('update', $priceType);
 
         return Inertia::render('price-types/edit', [
-            'priceType' => $priceType->only('id', 'name', 'comparable'),
+            'priceType' => [
+                ...$priceType->only('id', 'name', 'comparable'),
+                'purpose' => $priceType->purpose?->value,
+            ],
+            'purposes' => $this->purposeOptions(),
         ]);
     }
 
@@ -87,5 +94,16 @@ class PriceTypeController extends Controller
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Tipo de preço removido com sucesso.')]);
 
         return to_route('price-types.index');
+    }
+
+    /**
+     * @return list<array{value: string, label: string}>
+     */
+    private function purposeOptions(): array
+    {
+        return array_map(
+            fn (PropertyPurpose $purpose): array => ['value' => $purpose->value, 'label' => $purpose->label()],
+            PropertyPurpose::cases(),
+        );
     }
 }

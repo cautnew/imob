@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PropertyPurpose;
 use App\Models\Concerns\BelongsToCompany;
 use Database\Factories\PriceTypeFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -14,11 +15,12 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property int $company_id
  * @property string $name
+ * @property PropertyPurpose|null $purpose
  * @property bool $comparable
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['name', 'comparable'])]
+#[Fillable(['name', 'purpose', 'comparable'])]
 class PriceType extends Model
 {
     /** @use HasFactory<PriceTypeFactory> */
@@ -32,6 +34,7 @@ class PriceType extends Model
     protected function casts(): array
     {
         return [
+            'purpose' => PropertyPurpose::class,
             'comparable' => 'boolean',
         ];
     }

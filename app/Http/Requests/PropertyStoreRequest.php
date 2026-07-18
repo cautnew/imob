@@ -57,6 +57,13 @@ class PropertyStoreRequest extends FormRequest
             'purpose' => ['required', Rule::enum(PropertyPurpose::class)],
             'type' => ['required', Rule::enum(PropertyType::class)],
             'status' => ['required', Rule::enum(PropertyStatus::class)],
+            'is_public' => ['sometimes', 'boolean'],
+            'slug' => [
+                'nullable', 'string', 'max:255', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+                Rule::unique('properties', 'slug')
+                    ->where(fn ($query) => $query->where('company_id', $this->user()?->company_id))
+                    ->ignore($this->route('property')),
+            ],
         ];
     }
 

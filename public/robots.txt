@@ -1,2 +1,22 @@
 User-agent: *
-Disallow:
+Disallow: /dashboard
+Disallow: /settings
+Disallow: /primeiro-acesso
+Disallow: /usuarios
+Disallow: /papeis
+Disallow: /permissoes
+Disallow: /categorias-caracteristicas
+Disallow: /caracteristicas
+Disallow: /atributos
+Disallow: /precos
+Disallow: /imoveis
+Disallow: /proprietarios
+Disallow: /inquilinos
+Disallow: /locacoes
+Disallow: /categorias-financeiras
+Disallow: /financeiro
+Disallow: /boletos
+Disallow: /notificacoes
+Disallow: /portal
+
+Sitemap: /sitemap.xml

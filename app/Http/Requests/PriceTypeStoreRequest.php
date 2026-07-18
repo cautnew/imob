@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\PropertyPurpose;
 use App\Models\PriceType;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -42,6 +43,7 @@ class PriceTypeStoreRequest extends FormRequest
                 Rule::unique('price_types')->where(fn ($query) => $query
                     ->where('company_id', $this->user()?->company_id)),
             ],
+            'purpose' => ['nullable', Rule::enum(PropertyPurpose::class)],
             'comparable' => ['boolean'],
         ];
     }

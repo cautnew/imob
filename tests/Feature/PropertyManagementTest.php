@@ -369,3 +369,56 @@ test('comparable price types can be filtered for property comparison', function 
     expect($comparablePrices)->toHaveCount(1);
     expect($comparablePrices->first()->price_type_id)->toBe($comparableType->id);
 });
+
+test('a property can be created with a custom slug for its public URL', function () {
+    $owner = User::factory()->create(['is_owner' => true]);
+    $priceType = PriceType::factory()->for($owner->company)->create();
+
+    $this->actingAs($owner)->post(route('properties.store'), validPropertyPayload($priceType->id, [
+        'slug' => 'apartamento-vista-mar-personalizado',
+    ]))->assertRedirect(route('properties.index'));
+
+    expect(Property::first()->slug)->toBe('apartamento-vista-mar-personalizado');
+});
+
+test('a custom property slug must be unique within the company', function () {
+    $owner = User::factory()->create(['is_owner' => true]);
+    $priceType = PriceType::factory()->for($owner->company)->create();
+    Property::factory()->for($owner->company)->create(['slug' => 'imovel-existente']);
+
+    $this->actingAs($owner)->post(route('properties.store'), validPropertyPayload($priceType->id, [
+        'slug' => 'imovel-existente',
+    ]))->assertInvalid(['slug']);
+});
+
+test('a property slug must be lowercase letters, numbers and hyphens', function () {
+    $owner = User::factory()->create(['is_owner' => true]);
+    $priceType = PriceType::factory()->for($owner->company)->create();
+
+    $this->actingAs($owner)->post(route('properties.store'), validPropertyPayload($priceType->id, [
+        'slug' => 'Slug Inválido!',
+    ]))->assertInvalid(['slug']);
+});
+
+test('keeping the same slug on update does not collide with itself', function () {
+    $owner = User::factory()->create(['is_owner' => true]);
+    $priceType = PriceType::factory()->for($owner->company)->create();
+    $property = Property::factory()->for($owner->company)->create(['slug' => 'meu-imovel']);
+
+    $this->actingAs($owner)->put(route('properties.update', $property), validPropertyPayload($priceType->id, [
+        'slug' => 'meu-imovel',
+    ]))->assertSessionHasNoErrors();
+});
+
+test('clearing a property slug on update regenerates it from the title', function () {
+    $owner = User::factory()->create(['is_owner' => true]);
+    $priceType = PriceType::factory()->for($owner->company)->create();
+    $property = Property::factory()->for($owner->company)->create(['slug' => 'slug-antigo']);
+
+    $this->actingAs($owner)->put(route('properties.update', $property), validPropertyPayload($priceType->id, [
+        'title' => 'Novo Titulo Do Imovel',
+        'slug' => '',
+    ]))->assertRedirect(route('properties.index'));
+
+    expect($property->fresh()->slug)->toBe('novo-titulo-do-imovel');
+});

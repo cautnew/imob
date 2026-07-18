@@ -1,4 +1,5 @@
 import { Form, Head } from '@inertiajs/react';
+import { useState } from 'react';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
@@ -6,11 +7,29 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
 import { index, store } from '@/routes/price-types';
 import type { BreadcrumbItem } from '@/types';
 
-export default function PriceTypesCreate() {
+type Option = {
+    value: string;
+    label: string;
+};
+
+type Props = {
+    purposes: Option[];
+};
+
+export default function PriceTypesCreate({ purposes }: Props) {
+    const [purpose, setPurpose] = useState('');
+
     return (
         <>
             <Head title="Novo tipo de preço" />
@@ -39,6 +58,35 @@ export default function PriceTypesCreate() {
                                             placeholder="Ex: Venda, Aluguel, Condomínio"
                                         />
                                         <InputError message={errors.name} />
+                                    </div>
+
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="purpose">
+                                            Finalidade
+                                        </Label>
+                                        <Select
+                                            name="purpose"
+                                            value={purpose}
+                                            onValueChange={setPurpose}
+                                        >
+                                            <SelectTrigger
+                                                id="purpose"
+                                                className="w-full"
+                                            >
+                                                <SelectValue placeholder="Nenhuma (não usado no filtro de preço do portal público)" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {purposes.map((option) => (
+                                                    <SelectItem
+                                                        key={option.value}
+                                                        value={option.value}
+                                                    >
+                                                        {option.label}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <InputError message={errors.purpose} />
                                     </div>
 
                                     <label className="flex items-center gap-2 text-sm">

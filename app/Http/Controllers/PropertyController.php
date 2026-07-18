@@ -93,8 +93,9 @@ class PropertyController extends Controller
         return Inertia::render('properties/edit', [
             'property' => [
                 ...$property->only(
-                    'id', 'title', 'description', 'zip_code', 'street', 'number', 'complement',
+                    'id', 'title', 'slug', 'description', 'zip_code', 'street', 'number', 'complement',
                     'neighborhood', 'city', 'state', 'latitude', 'longitude', 'total_area', 'built_area',
+                    'is_public',
                 ),
                 'purpose' => $property->purpose->value,
                 'type' => $property->type->value,

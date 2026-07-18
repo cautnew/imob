@@ -25,3 +25,4 @@ require __DIR__.'/finance.php';
 require __DIR__.'/bills.php';
 require __DIR__.'/notifications.php';
 require __DIR__.'/portal.php';
+require __DIR__.'/public-portal.php';

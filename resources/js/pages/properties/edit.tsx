@@ -50,6 +50,7 @@ type PropertyPriceValue = {
 type EditableProperty = {
     id: number;
     title: string;
+    slug: string;
     description: string | null;
     purpose: string;
     type: string;
@@ -65,6 +66,7 @@ type EditableProperty = {
     longitude: string | null;
     total_area: string;
     built_area: string | null;
+    is_public: boolean;
     feature_ids: number[];
     attribute_values: Record<number, string | number | (string | number)[]>;
     prices: PropertyPriceValue[];
@@ -119,6 +121,7 @@ export default function PropertiesEdit({
                     frequencies={frequencies}
                     defaultValues={{
                         title: property.title,
+                        slug: property.slug,
                         description: property.description ?? '',
                         purpose: property.purpose,
                         type: property.type,
@@ -134,6 +137,7 @@ export default function PropertiesEdit({
                         longitude: property.longitude ?? '',
                         total_area: property.total_area,
                         built_area: property.built_area ?? '',
+                        is_public: property.is_public,
                         feature_ids: property.feature_ids,
                         attribute_values: property.attribute_values,
                         prices: property.prices,

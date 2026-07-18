@@ -1,6 +1,7 @@
 export type Company = {
     id: number;
     name: string;
+    slug: string;
     document: string | null;
     phone: string | null;
     address: string | null;

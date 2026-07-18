@@ -1,4 +1,4 @@
-import { Form } from '@inertiajs/react';
+import { Form, usePage } from '@inertiajs/react';
 import { Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import InputError from '@/components/input-error';
@@ -16,6 +16,8 @@ import {
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
+import { show as showPublicProperty } from '@/routes/public/properties';
+import type { Auth } from '@/types/auth';
 import type { RouteDefinition } from '@/wayfinder';
 
 type Option = {
@@ -60,6 +62,7 @@ type PropertyPriceValue = {
 
 export type PropertyFormValues = {
     title: string;
+    slug: string;
     description: string;
     purpose: string;
     type: string;
@@ -75,6 +78,7 @@ export type PropertyFormValues = {
     longitude: string;
     total_area: string;
     built_area: string;
+    is_public: boolean;
     feature_ids: number[];
     attribute_values: Record<number, string | number | (string | number)[]>;
     prices: PropertyPriceValue[];
@@ -119,6 +123,8 @@ export default function PropertyForm({
     submitLabel,
     backHref,
 }: Props) {
+    const { auth } = usePage<{ auth: Auth }>().props;
+    const [slug, setSlug] = useState(defaultValues?.slug ?? '');
     const [purpose, setPurpose] = useState(defaultValues?.purpose ?? '');
     const [type, setType] = useState(defaultValues?.type ?? '');
     const [status, setStatus] = useState(
@@ -196,6 +202,28 @@ export default function PropertyForm({
                                     placeholder="Ex: Apartamento 3 quartos no Centro"
                                 />
                                 <InputError message={errors.title} />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="slug">Slug (URL pública)</Label>
+                                <Input
+                                    id="slug"
+                                    type="text"
+                                    name="slug"
+                                    value={slug}
+                                    onChange={(e) => setSlug(e.target.value)}
+                                    placeholder="gerado-automaticamente-a-partir-do-titulo"
+                                />
+                                <p className="text-sm text-muted-foreground">
+                                    {slug
+                                        ? showPublicProperty.url({
+                                              companySlug:
+                                                  auth.user.company.slug,
+                                              propertySlug: slug,
+                                          })
+                                        : 'Deixe em branco para gerar automaticamente a partir do título.'}
+                                </p>
+                                <InputError message={errors.slug} />
                             </div>
 
                             <div className="grid gap-2">
@@ -294,6 +322,16 @@ export default function PropertyForm({
                                     <InputError message={errors.status} />
                                 </div>
                             </div>
+
+                            <label className="flex items-center gap-2 text-sm">
+                                <Checkbox
+                                    name="is_public"
+                                    value="1"
+                                    defaultChecked={defaultValues?.is_public}
+                                />
+                                Publicar no portal público de imóveis
+                            </label>
+                            <InputError message={errors.is_public} />
                         </CardContent>
                     </Card>
 

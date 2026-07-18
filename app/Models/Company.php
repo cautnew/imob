@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasSlug;
 use Database\Factories\CompanyFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,6 +14,7 @@ use Spatie\Permission\Models\Role;
 /**
  * @property int $id
  * @property string $name
+ * @property string|null $slug
  * @property string|null $document
  * @property string|null $phone
  * @property string|null $address
@@ -20,11 +22,21 @@ use Spatie\Permission\Models\Role;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['name', 'document', 'phone', 'address'])]
+#[Fillable(['name', 'slug', 'document', 'phone', 'address'])]
 class Company extends Model
 {
     /** @use HasFactory<CompanyFactory> */
-    use HasFactory;
+    use HasFactory, HasSlug;
+
+    protected function slugSourceColumn(): string
+    {
+        return 'name';
+    }
+
+    protected function reservedSlugs(): array
+    {
+        return config('public-portal.reserved_slugs', []);
+    }
 
     /**
      * Get the attributes that should be cast.
