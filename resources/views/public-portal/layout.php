@@ -58,6 +58,10 @@ $comparisonIds ??= [];
     table.compare-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: .5rem; overflow: hidden; }
     table.compare-table th, table.compare-table td { border-bottom: 1px solid #e4e7eb; padding: .6rem .75rem; text-align: left; vertical-align: top; }
     table.compare-table th.attr-label { background: #f6f7f9; width: 200px; }
+    table.compare-table tr.row-diff td, table.compare-table tr.row-diff th.attr-label { background: #fff6d9; }
+    table.compare-table tr.section-row th.attr-label { background: #eef2f7; color: #14213d; font-size: .8rem; text-transform: uppercase; letter-spacing: .03em; }
+    .comparison-legend { display: flex; align-items: center; gap: .4rem; font-size: .85rem; color: #616e7c; margin-bottom: .75rem; }
+    .comparison-legend .swatch { display: inline-block; width: .9rem; height: .9rem; border-radius: .2rem; background: #fff6d9; border: 1px solid #e4e7eb; }
     .alert { padding: .75rem 1rem; border-radius: .4rem; margin-bottom: 1rem; }
     .alert-error { background: #fde8e8; color: #9b2c2c; }
     .badge { display: inline-block; padding: .1rem .5rem; border-radius: 1rem; background: #eef2ff; color: #14213d; font-size: .75rem; }

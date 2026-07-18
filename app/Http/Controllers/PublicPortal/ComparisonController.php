@@ -31,7 +31,7 @@ class ComparisonController extends Controller
             ->whereIn('id', $ids)
             ->with([
                 'media' => fn ($q) => $q->where('is_cover', true),
-                'features', 'attributeValues.propertyAttribute', 'attributeValues.propertyAttributeOption',
+                'features.featureCategory', 'attributeValues.propertyAttribute', 'attributeValues.propertyAttributeOption',
                 'prices.priceType',
             ])
             ->get();
@@ -39,12 +39,18 @@ class ComparisonController extends Controller
         $comparableAttributes = $company->propertyAttributes()->where('comparable', true)->orderBy('name')->get();
         $comparablePriceTypes = $company->priceTypes()->where('comparable', true)->orderBy('name')->get();
 
+        $comparisonFeatures = $properties->pluck('features')->flatten()
+            ->unique('id')
+            ->sortBy([['featureCategory.name', 'asc'], ['name', 'asc']])
+            ->values();
+
         return view('public-portal.comparison.index', [
             'company' => $company,
             'properties' => $properties,
             'comparisonIds' => $ids,
             'comparableAttributes' => $comparableAttributes,
             'comparablePriceTypes' => $comparablePriceTypes,
+            'comparisonFeatures' => $comparisonFeatures,
         ]);
     }
 

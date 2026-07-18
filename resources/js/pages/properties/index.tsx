@@ -1,10 +1,12 @@
 import { Form, Head, Link, router } from '@inertiajs/react';
-import { Images, Pencil, Plus, Trash2 } from 'lucide-react';
+import { Images, Pencil, Plus, Scale, Trash2 } from 'lucide-react';
 import type { FormEvent } from 'react';
+import { useState } from 'react';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
     Dialog,
     DialogClose,
@@ -31,9 +33,11 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { usePermissions } from '@/hooks/use-permissions';
-import { create, destroy, edit, index } from '@/routes/properties';
+import { compare, create, destroy, edit, index } from '@/routes/properties';
 import { index as media } from '@/routes/property-media';
 import type { BreadcrumbItem } from '@/types';
+
+const MAX_COMPARISON = 4;
 
 type Option = {
     value: string;
@@ -87,6 +91,18 @@ export default function PropertiesIndex({
     const canCreate = can('imoveis.criar');
     const canEdit = can('imoveis.editar');
     const canDelete = can('imoveis.excluir');
+
+    const [selectedIds, setSelectedIds] = useState<number[]>([]);
+
+    const toggleSelected = (id: number, checked: boolean) => {
+        setSelectedIds((current) =>
+            checked
+                ? current.length < MAX_COMPARISON
+                    ? [...current, id]
+                    : current
+                : current.filter((selectedId) => selectedId !== id),
+        );
+    };
 
     const statusLabel = (status: string) =>
         statuses.find((option) => option.value === status)?.label ?? status;
@@ -202,11 +218,28 @@ export default function PropertiesIndex({
                             ))}
                         </SelectContent>
                     </Select>
+
+                    {selectedIds.length >= 2 ? (
+                        <Button variant="outline" asChild className="ml-auto">
+                            <Link
+                                href={compare({ query: { ids: selectedIds } })}
+                            >
+                                <Scale />
+                                Comparar ({selectedIds.length})
+                            </Link>
+                        </Button>
+                    ) : (
+                        <Button variant="outline" disabled className="ml-auto">
+                            <Scale />
+                            Comparar ({selectedIds.length})
+                        </Button>
+                    )}
                 </div>
 
                 <Table>
                     <TableHeader>
                         <TableRow>
+                            <TableHead className="w-0" />
                             <TableHead>Título</TableHead>
                             <TableHead>Cidade/UF</TableHead>
                             <TableHead>Finalidade</TableHead>
@@ -218,6 +251,26 @@ export default function PropertiesIndex({
                     <TableBody>
                         {properties.data.map((property) => (
                             <TableRow key={property.id}>
+                                <TableCell>
+                                    <Checkbox
+                                        checked={selectedIds.includes(
+                                            property.id,
+                                        )}
+                                        disabled={
+                                            !selectedIds.includes(
+                                                property.id,
+                                            ) &&
+                                            selectedIds.length >= MAX_COMPARISON
+                                        }
+                                        onCheckedChange={(checked) =>
+                                            toggleSelected(
+                                                property.id,
+                                                checked === true,
+                                            )
+                                        }
+                                        aria-label={`Selecionar ${property.title} para comparação`}
+                                    />
+                                </TableCell>
                                 <TableCell className="font-medium">
                                     {property.title}
                                 </TableCell>

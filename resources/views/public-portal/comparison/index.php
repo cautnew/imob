@@ -22,6 +22,21 @@ $priceForType = function ($property, $priceTypeId) {
     return $price ? portal_money($price->amount) : '—';
 };
 
+$hasFeature = fn ($property, $featureId) => $property->features->contains('id', $featureId) ? 'Sim' : 'Não';
+
+// Renders one comparison row and highlights it when the values differ across properties.
+$renderRow = function (string $label, array $values) {
+    $diff = count(array_unique($values)) > 1;
+    ?>
+    <tr<?= $diff ? ' class="row-diff"' : '' ?>>
+        <th class="attr-label"><?= e($label) ?></th>
+        <?php foreach ($values as $value) { ?>
+        <td><?= e($value) ?></td>
+        <?php } ?>
+    </tr>
+    <?php
+};
+
 ob_start();
 ?>
 <h1>Comparar imóveis</h1>
@@ -33,6 +48,7 @@ ob_start();
 <?php if ($properties->isEmpty()) { ?>
 <div class="empty-state">Você ainda não adicionou imóveis para comparar. Use o botão "Comparar" nos cartões de imóvel.</div>
 <?php } else { ?>
+<p class="comparison-legend"><span class="swatch"></span> Linhas destacadas indicam diferenças entre os imóveis.</p>
 <div style="overflow-x:auto;">
 <table class="compare-table">
     <tr>
@@ -47,51 +63,25 @@ ob_start();
         </th>
         <?php } ?>
     </tr>
-    <tr>
-        <th class="attr-label">Preço principal</th>
-        <?php foreach ($properties as $property) { ?>
-        <td><?= e(portal_money($property->principalPrice()?->amount)) ?></td>
-        <?php } ?>
-    </tr>
+    <?php $renderRow('Preço principal', $properties->map(fn ($property) => portal_money($property->principalPrice()?->amount))->all()); ?>
     <?php foreach ($comparablePriceTypes as $priceType) { ?>
-    <tr>
-        <th class="attr-label"><?= e($priceType->name) ?></th>
-        <?php foreach ($properties as $property) { ?>
-        <td><?= e($priceForType($property, $priceType->id)) ?></td>
-        <?php } ?>
-    </tr>
+        <?php $renderRow($priceType->name, $properties->map(fn ($property) => $priceForType($property, $priceType->id))->all()); ?>
     <?php } ?>
-    <tr>
-        <th class="attr-label">Tipo</th>
-        <?php foreach ($properties as $property) { ?>
-        <td><?= e($property->type->label()) ?></td>
-        <?php } ?>
-    </tr>
-    <tr>
-        <th class="attr-label">Finalidade</th>
-        <?php foreach ($properties as $property) { ?>
-        <td><?= e($property->purpose->label()) ?></td>
-        <?php } ?>
-    </tr>
-    <tr>
-        <th class="attr-label">Bairro / Cidade</th>
-        <?php foreach ($properties as $property) { ?>
-        <td><?= e($property->neighborhood) ?>, <?= e($property->city) ?></td>
-        <?php } ?>
-    </tr>
-    <tr>
-        <th class="attr-label">Área total</th>
-        <?php foreach ($properties as $property) { ?>
-        <td><?= e(number_format((float) $property->total_area, 2, ',', '.')) ?> m²</td>
-        <?php } ?>
-    </tr>
+    <?php $renderRow('Tipo', $properties->map(fn ($property) => $property->type->label())->all()); ?>
+    <?php $renderRow('Finalidade', $properties->map(fn ($property) => $property->purpose->label())->all()); ?>
+    <?php $renderRow('Bairro / Cidade', $properties->map(fn ($property) => "{$property->neighborhood}, {$property->city}")->all()); ?>
+    <?php $renderRow('Área total', $properties->map(fn ($property) => number_format((float) $property->total_area, 2, ',', '.').' m²')->all()); ?>
+    <?php if ($comparisonFeatures->isNotEmpty()) { ?>
+    <tr class="section-row"><th class="attr-label" colspan="<?= count($properties) + 1 ?>">Características</th></tr>
+    <?php foreach ($comparisonFeatures as $feature) { ?>
+        <?php $renderRow($feature->name, $properties->map(fn ($property) => $hasFeature($property, $feature->id))->all()); ?>
+    <?php } ?>
+    <?php } ?>
+    <?php if ($comparableAttributes->isNotEmpty()) { ?>
+    <tr class="section-row"><th class="attr-label" colspan="<?= count($properties) + 1 ?>">Atributos personalizados</th></tr>
     <?php foreach ($comparableAttributes as $attribute) { ?>
-    <tr>
-        <th class="attr-label"><?= e($attribute->name) ?></th>
-        <?php foreach ($properties as $property) { ?>
-        <td><?= e((string) $attributeValueFor($property, $attribute->id)) ?></td>
-        <?php } ?>
-    </tr>
+        <?php $renderRow($attribute->name, $properties->map(fn ($property) => (string) $attributeValueFor($property, $attribute->id))->all()); ?>
+    <?php } ?>
     <?php } ?>
 </table>
 </div>
