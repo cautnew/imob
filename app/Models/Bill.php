@@ -80,6 +80,14 @@ class Bill extends Model
     }
 
     /**
+     * @return HasMany<BillReceipt, $this>
+     */
+    public function receipts(): HasMany
+    {
+        return $this->hasMany(BillReceipt::class)->latest();
+    }
+
+    /**
      * The sum of the amounts of every transaction linked to this bill.
      */
     public function totalAmount(): string

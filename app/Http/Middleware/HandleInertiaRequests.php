@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -35,18 +36,21 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+        $staffUser = $user instanceof User ? $user : null;
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
             'auth' => [
-                'user' => $request->user()?->load('company'),
+                'user' => $user?->load('company'),
             ],
-            'roles' => fn () => $request->user()?->getRoleNames() ?? collect(),
-            'permissionNames' => fn () => $request->user()?->getAllPermissions()->pluck('name') ?? collect(),
+            'roles' => fn () => $staffUser?->getRoleNames() ?? collect(),
+            'permissionNames' => fn () => $staffUser?->getAllPermissions()->pluck('name') ?? collect(),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
-            'notifications' => fn () => $request->user() ? [
-                'unread_count' => $request->user()->unreadNotifications()->count(),
-                'items' => $request->user()->notifications()->latest()->limit(10)->get(),
+            'notifications' => fn () => $user ? [
+                'unread_count' => $user->unreadNotifications()->count(),
+                'items' => $user->notifications()->latest()->limit(10)->get(),
             ] : null,
         ];
     }

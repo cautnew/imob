@@ -7,6 +7,7 @@ use App\Models\Lessee;
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @extends Factory<Lessee>
@@ -44,5 +45,15 @@ class LesseeFactory extends Factory
             'state' => fake()->randomElement(['SP', 'RJ', 'MG', 'PR', 'RS']),
             'monthly_income' => fake()->randomFloat(2, 1800, 15000),
         ];
+    }
+
+    /**
+     * Indicate that the lessee has already registered a portal password.
+     */
+    public function withPassword(string $password = 'password'): static
+    {
+        return $this->state(fn (): array => [
+            'password' => Hash::make($password),
+        ]);
     }
 }

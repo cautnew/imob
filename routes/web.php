@@ -24,3 +24,4 @@ require __DIR__.'/lease-documents.php';
 require __DIR__.'/finance.php';
 require __DIR__.'/bills.php';
 require __DIR__.'/notifications.php';
+require __DIR__.'/portal.php';

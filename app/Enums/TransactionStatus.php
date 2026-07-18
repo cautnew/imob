@@ -7,6 +7,7 @@ enum TransactionStatus: string
     case Pending = 'pendente';
     case Paid = 'pago';
     case Overdue = 'vencido';
+    case AwaitingApproval = 'aguardando_aprovacao';
 
     /**
      * Get the human-readable label for the status.
@@ -17,6 +18,7 @@ enum TransactionStatus: string
             self::Pending => 'Pendente',
             self::Paid => 'Pago',
             self::Overdue => 'Vencido',
+            self::AwaitingApproval => 'Aguardando aprovação',
         };
     }
 }

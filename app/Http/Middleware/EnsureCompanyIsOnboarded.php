@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +18,7 @@ class EnsureCompanyIsOnboarded
     {
         $user = $request->user();
 
-        if ($user && ! $user->company->onboarded_at && ! $request->routeIs('onboarding.*', 'logout')) {
+        if ($user instanceof User && ! $user->company->onboarded_at && ! $request->routeIs('onboarding.*', 'logout')) {
             return redirect()->route('onboarding.edit');
         }
 

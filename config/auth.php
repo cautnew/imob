@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Lessee;
 use App\Models\User;
 
 return [
@@ -42,6 +43,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'lessee' => [
+            'driver' => 'session',
+            'provider' => 'lessees',
+        ],
     ],
 
     /*
@@ -71,6 +77,11 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+
+        'lessees' => [
+            'driver' => 'eloquent',
+            'model' => Lessee::class,
+        ],
     ],
 
     /*
@@ -96,6 +107,13 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'lessees' => [
+            'provider' => 'lessees',
+            'table' => 'lessee_password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,
         ],

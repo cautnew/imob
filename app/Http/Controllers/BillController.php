@@ -38,6 +38,8 @@ class BillController extends Controller
                 ->where('status', BillStatus::Paid))
             ->when($status === BillStatus::Pending->value, fn ($query) => $query->open())
             ->when($status === BillStatus::Overdue->value, fn ($query) => $query->overdue())
+            ->when($status === BillStatus::AwaitingApproval->value, fn ($query) => $query
+                ->where('status', BillStatus::AwaitingApproval))
             ->when($leaseId, fn ($query, $value) => $query->where('lease_id', $value))
             ->when($search, fn ($query, $value) => $query
                 ->whereHas('lease.property', fn ($query) => $query->where('title', 'like', "%{$value}%")))

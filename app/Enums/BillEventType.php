@@ -11,6 +11,9 @@ enum BillEventType: string
     case TransactionDetached = 'lancamento_desvinculado';
     case MarkedAsPaid = 'marcado_como_pago';
     case Reopened = 'reaberto';
+    case ReceiptUploaded = 'comprovante_anexado';
+    case ReceiptApproved = 'comprovante_aprovado';
+    case ReceiptRejected = 'comprovante_rejeitado';
 
     /**
      * Get the human-readable label for the event type.
@@ -25,6 +28,9 @@ enum BillEventType: string
             self::TransactionDetached => 'Lançamento desvinculado',
             self::MarkedAsPaid => 'Marcado como pago',
             self::Reopened => 'Reaberto',
+            self::ReceiptUploaded => 'Comprovante enviado',
+            self::ReceiptApproved => 'Comprovante aprovado',
+            self::ReceiptRejected => 'Comprovante rejeitado',
         };
     }
 }

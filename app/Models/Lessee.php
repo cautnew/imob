@@ -6,10 +6,12 @@ use App\Enums\MaritalStatus;
 use App\Models\Concerns\BelongsToCompany;
 use Database\Factories\LesseeFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 
 /**
@@ -25,6 +27,8 @@ use Illuminate\Support\Carbon;
  * @property string $phone
  * @property string|null $mobile
  * @property string|null $email
+ * @property string|null $password
+ * @property string|null $remember_token
  * @property string $zip_code
  * @property string $street
  * @property string|null $number
@@ -39,14 +43,15 @@ use Illuminate\Support\Carbon;
 #[Fillable([
     'name', 'birth_date', 'marital_status', 'occupation',
     'document', 'rg', 'rg_issuer',
-    'phone', 'mobile', 'email',
+    'phone', 'mobile', 'email', 'password',
     'zip_code', 'street', 'number', 'complement', 'neighborhood', 'city', 'state',
     'monthly_income',
 ])]
-class Lessee extends Model
+#[Hidden(['password', 'remember_token'])]
+class Lessee extends Authenticatable
 {
     /** @use HasFactory<LesseeFactory> */
-    use BelongsToCompany, HasFactory;
+    use BelongsToCompany, HasFactory, Notifiable;
 
     /**
      * Get the attributes that should be cast.
@@ -59,6 +64,7 @@ class Lessee extends Model
             'birth_date' => 'date',
             'marital_status' => MaritalStatus::class,
             'monthly_income' => 'decimal:2',
+            'password' => 'hashed',
         ];
     }
 
@@ -78,5 +84,13 @@ class Lessee extends Model
     public function leases(): HasMany
     {
         return $this->hasMany(Lease::class);
+    }
+
+    /**
+     * @return HasMany<BillReceipt, $this>
+     */
+    public function receipts(): HasMany
+    {
+        return $this->hasMany(BillReceipt::class);
     }
 }

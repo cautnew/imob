@@ -5,6 +5,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { initializeTheme } from '@/hooks/use-appearance';
 import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
+import PortalLayout from '@/layouts/portal-layout';
 import PublicLayout from '@/layouts/public-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { queryClient } from '@/lib/query-client';
@@ -17,6 +18,10 @@ createInertiaApp({
         switch (true) {
             case name.startsWith('public/'):
                 return PublicLayout;
+            case name.startsWith('portal/auth/'):
+                return AuthLayout;
+            case name.startsWith('portal/'):
+                return PortalLayout;
             case name.startsWith('auth/') || name.startsWith('onboarding/'):
                 return AuthLayout;
             case name.startsWith('settings/'):

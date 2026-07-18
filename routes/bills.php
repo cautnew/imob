@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BillController;
 use App\Http\Controllers\BillPdfController;
+use App\Http\Controllers\BillReceiptReviewController;
 use App\Http\Controllers\BillTransactionController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,4 +21,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('boletos/{bill}/lancamentos', [BillTransactionController::class, 'store'])->name('bill-transactions.store');
     Route::delete('boletos/{bill}/lancamentos/{transaction}', [BillTransactionController::class, 'destroy'])->name('bill-transactions.destroy');
+
+    Route::post('boletos/{bill}/comprovantes/{receipt}/aprovar', [BillReceiptReviewController::class, 'approve'])->name('bill-receipts.approve');
+    Route::post('boletos/{bill}/comprovantes/{receipt}/rejeitar', [BillReceiptReviewController::class, 'reject'])->name('bill-receipts.reject');
 });

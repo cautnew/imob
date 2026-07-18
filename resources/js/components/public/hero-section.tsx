@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { login, register } from '@/routes';
+import { login as portalLogin } from '@/routes/portal';
 
 export default function HeroSection() {
     return (
@@ -38,6 +39,16 @@ export default function HeroSection() {
 
                     <p className="text-sm text-muted-foreground">
                         Não é necessário cartão de crédito para começar.
+                    </p>
+
+                    <p className="text-sm text-muted-foreground">
+                        É inquilino?{' '}
+                        <Link
+                            href={portalLogin()}
+                            className="font-medium text-foreground underline underline-offset-4 hover:text-primary"
+                        >
+                            Acesse o Portal do Inquilino
+                        </Link>
                     </p>
                 </div>
 
