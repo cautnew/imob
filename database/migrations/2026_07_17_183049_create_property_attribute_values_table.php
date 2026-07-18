@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('value')->nullable();
             $table->timestamps();
 
-            $table->index(['property_id', 'property_attribute_id']);
+            $table->index(['property_id', 'property_attribute_id'], 'prop_attr_val_prop_id_prop_attr_id_idx');
         });
     }
 
