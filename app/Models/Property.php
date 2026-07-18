@@ -104,4 +104,12 @@ class Property extends Model
     {
         return $this->belongsToMany(Owner::class);
     }
+
+    /**
+     * @return BelongsToMany<Lessee, $this>
+     */
+    public function lessees(): BelongsToMany
+    {
+        return $this->belongsToMany(Lessee::class);
+    }
 }

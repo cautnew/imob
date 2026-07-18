@@ -11,6 +11,7 @@ import {
     Tags,
     UserRound,
     Users,
+    UsersRound,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
@@ -28,6 +29,7 @@ import {
 import { usePermissions } from '@/hooks/use-permissions';
 import { dashboard } from '@/routes';
 import { index as featuresIndex } from '@/routes/features';
+import { index as lesseesIndex } from '@/routes/lessees';
 import { index as ownersIndex } from '@/routes/owners';
 import { index as permissionsIndex } from '@/routes/permissions';
 import { index as priceTypesIndex } from '@/routes/price-types';
@@ -74,6 +76,15 @@ export function AppSidebar() {
                       title: 'Proprietários',
                       href: ownersIndex(),
                       icon: UserRound,
+                  },
+              ]
+            : []),
+        ...(can('inquilinos.visualizar')
+            ? [
+                  {
+                      title: 'Inquilinos',
+                      href: lesseesIndex(),
+                      icon: UsersRound,
                   },
               ]
             : []),

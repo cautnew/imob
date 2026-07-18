@@ -42,6 +42,10 @@ class PermissionSeeder extends Seeder
         'proprietarios.criar',
         'proprietarios.editar',
         'proprietarios.excluir',
+        'inquilinos.visualizar',
+        'inquilinos.criar',
+        'inquilinos.editar',
+        'inquilinos.excluir',
     ];
 
     /**
