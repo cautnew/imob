@@ -65,6 +65,10 @@ $comparisonIds ??= [];
     .alert { padding: .75rem 1rem; border-radius: .4rem; margin-bottom: 1rem; }
     .alert-error { background: #fde8e8; color: #9b2c2c; }
     .badge { display: inline-block; padding: .1rem .5rem; border-radius: 1rem; background: #eef2ff; color: #14213d; font-size: .75rem; }
+    .share-buttons { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
+    .share-label { font-size: .85rem; color: #616e7c; margin-right: .25rem; }
+    .share-btn { display: inline-block; padding: .35rem .75rem; border-radius: .3rem; border: 1px solid #d3d9e0; background: #fff; color: #14213d; font: inherit; font-size: .8rem; cursor: pointer; text-decoration: none; }
+    .share-btn:hover { background: #f6f7f9; }
 </style>
 </head>
 <body>
@@ -90,5 +94,18 @@ $comparisonIds ??= [];
         <p><?= e($company->name) ?><?php if ($company->phone) { ?> &middot; <?= e($company->phone) ?><?php } ?><?php if ($company->address) { ?> &middot; <?= e($company->address) ?><?php } ?></p>
     </div>
 </footer>
+<script>
+document.addEventListener('click', function (event) {
+    var button = event.target.closest('.share-copy');
+    if (!button) {
+        return;
+    }
+    navigator.clipboard.writeText(button.dataset.copyUrl).then(function () {
+        var original = button.textContent;
+        button.textContent = 'Link copiado!';
+        setTimeout(function () { button.textContent = original; }, 2000);
+    });
+});
+</script>
 </body>
 </html>

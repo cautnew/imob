@@ -60,6 +60,12 @@ ob_start();
     </form>
 </div>
 
+<?php
+$shareUrl = portal_route('properties.show', $company->slug, ['propertySlug' => $property->slug]);
+$shareTitle = $property->title;
+include __DIR__.'/../partials/share-buttons.php';
+?>
+
 <h2>Detalhes</h2>
 <table class="compare-table" style="margin-bottom:1.5rem;">
     <tr><th class="attr-label">Finalidade</th><td><?= e($property->purpose->label()) ?></td></tr>
