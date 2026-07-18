@@ -23,6 +23,29 @@ test('favoriting a property sets a cookie and the favorites page reflects it', f
     $indexResponse->assertSee('Casa Favorita');
 });
 
+test('the favorites list is capped at the configured maximum', function () {
+    $company = Company::factory()->create();
+    $max = config('public-portal.favorites_max');
+    $properties = Property::factory()->for($company)->count($max + 1)->create([
+        'is_public' => true, 'status' => 'disponivel',
+    ]);
+
+    $cookie = json_encode([
+        $company->slug => $properties->take($max)->pluck('id')->all(),
+    ]);
+
+    $extraProperty = $properties->last();
+
+    $response = $this->withCookie('portal_favorites', $cookie)
+        ->post(route('public.favorites.store', [$company->slug, $extraProperty->slug]));
+
+    $response->assertRedirect();
+    $response->assertSessionHas('favorites_error');
+
+    // No new favorites cookie should have been queued — the existing selection stays untouched.
+    expect($response->getCookie('portal_favorites', false))->toBeNull();
+});
+
 test('unfavoriting removes only that property, keeping other companies favorites intact', function () {
     $companyA = Company::factory()->create();
     $companyB = Company::factory()->create();

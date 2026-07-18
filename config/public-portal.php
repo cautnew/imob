@@ -35,6 +35,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Favorites Limit
+    |--------------------------------------------------------------------------
+    |
+    | Maximum number of properties a visitor may hold in the favorites
+    | cookie per company. Without a cap the cookie grows unbounded and can
+    | exceed the web server's fastcgi/proxy header size limit.
+    |
+    */
+    'favorites_max' => 50,
+
+    /*
+    |--------------------------------------------------------------------------
     | Favorites Cookie Lifetime
     |--------------------------------------------------------------------------
     */

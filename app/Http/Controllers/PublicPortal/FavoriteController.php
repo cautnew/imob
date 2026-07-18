@@ -48,6 +48,13 @@ class FavoriteController extends Controller
 
         $cookieData = $this->readCookie($request, self::COOKIE);
         $ids = $this->idsFor($cookieData, $company->slug);
+
+        $max = (int) config('public-portal.favorites_max');
+
+        if (! in_array($property->id, $ids, true) && count($ids) >= $max) {
+            return back()->with('favorites_error', __('Você já atingiu o limite de :max imóveis favoritados.', ['max' => $max]));
+        }
+
         $ids[] = $property->id;
         $cookieData[$company->slug] = array_values(array_unique($ids));
 
